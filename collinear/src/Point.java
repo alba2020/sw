@@ -5,13 +5,11 @@ import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
 
-    // compare points by slope
     public final Comparator<Point> SLOPE_ORDER = new SlopeOrder();
 
-    private final int x; // x coordinate
-    private final int y; // y coordinate
+    private final int x;
+    private final int y;
 
-    // create the point (x, y)
     public Point(int x, int y) {
         /* DO NOT MODIFY */
         this.x = x;
@@ -30,9 +28,31 @@ public class Point implements Comparable<Point> {
         StdDraw.line(this.x, this.y, that.x, that.y);
     }
 
+    public String toString() {
+        /* DO NOT MODIFY */
+        return "(" + x + ", " + y + ")";
+    }
+
+    // is this point lexicographically smaller than that one?
+    // comparing y-coordinates and breaking ties by x-coordinates
+    public int compareTo(Point that) {
+        int x0 = this.x;
+        int y0 = this.y;
+        int x1 = that.x;
+        int y1 = that.y;
+
+        if (y0 < y1)
+            return -1;
+        else if (y0 == y1 && x0 < x1)
+            return -1;
+        else if (y0 == y1 && x0 == x1)
+            return 0;
+
+        return 1;
+    }
+
     // slope between this point and that point
     public double slopeTo(Point that) {
-        /* YOUR CODE HERE */
         double one = 1.0; // for zeros
 
         double dy = that.y - this.y;
@@ -49,36 +69,14 @@ public class Point implements Comparable<Point> {
         return dy / dx;
     }
 
-    // is this point lexicographically smaller than that one?
-    // comparing y-coordinates and breaking ties by x-coordinates
-    public int compareTo(Point that) {
-        /* YOUR CODE HERE */
-        int x0 = this.x;
-        int y0 = this.y;
-        int x1 = that.x;
-        int y1 = that.y;
-
-        if (y0 < y1)
-            return -1;
-        else if (y0 == y1 && x0 < x1)
-            return -1;
-        else if (y0 == y1 && x0 == x1)
-            return 0;
-
-        return 1;
-    }
-
-    // return string representation of this point
-    public String toString() {
-        /* DO NOT MODIFY */
-        return "(" + x + ", " + y + ")";
+    public Comparator<Point> slopeOrder() {
+        return SLOPE_ORDER;
     }
 
     private class SlopeOrder implements Comparator<Point> {
-
         public int compare(Point p1, Point p2) {
-            Double s1 = slopeTo(p1);
-            Double s2 = slopeTo(p2);
+            double s1 = slopeTo(p1);
+            double s2 = slopeTo(p2);
 
             if (s1 < s2)
                 return -1;

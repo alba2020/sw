@@ -22,7 +22,7 @@ public class BruteCollinearPoints {
                 throw new IllegalArgumentException("duplicate points");
         }
 
-        ArrayList<LineSegment> list = new ArrayList<>();
+        ArrayList<LineSegment> list = new ArrayList<LineSegment>();
 
         int N = points.length;
         for (int i = 0; i < N; i++)
