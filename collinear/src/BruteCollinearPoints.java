@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BruteCollinearPoints {
+
     private LineSegment[] segments;
 
     // finds all line segments containing 4 points
@@ -25,36 +26,33 @@ public class BruteCollinearPoints {
         ArrayList<LineSegment> list = new ArrayList<LineSegment>();
 
         int N = points.length;
-        for (int i = 0; i < N; i++)
-            for (int j = i + 1; j < N; j++)
-                for (int k = j + 1; k < N; k++)
-                    for (int l = k + 1; l < N; l++) {
-                        double s1 = points[i].slopeTo(points[j]);
-                        double s2 = points[j].slopeTo(points[k]);
-                        double s3 = points[k].slopeTo(points[l]);
+        for (int i = 0; i < N; i++) {
+            for (int j = i + 1; j < N; j++) {
+                double s1 = points[i].slopeTo(points[j]);
 
-                        if(s1 == s2 && s2 == s3) {
-                            list.add(new LineSegment(points[i], points[l]));
-                            print4(points[i], points[j], points[k], points[l]);
+                for (int k = j + 1; k < N; k++) {
+                    double s2 = points[j].slopeTo(points[k]);
+
+                    if (s1 == s2) {
+                        for (int l = k + 1; l < N; l++) {
+                            double s3 = points[k].slopeTo(points[l]);
+
+                            if(s2 == s3) {
+                                list.add(new LineSegment(points[i], points[l]));
+//                                print4(points[i], points[j], points[k], points[l]);
+                            }
                         }
-
-//                        if (points[i].slopeTo(points[j]) == points[i].slopeTo(points[k]) &&
-//                            points[i].slopeTo(points[j]) == points[i].slopeTo(points[l])) {
-//                            print4(points[i], points[j], points[k], points[l]);
-//                            System.out.println(points[i] + " " + points[l]);
-//                        }
                     }
+                }
+            }
+        }
 
         this.segments = list.toArray(new LineSegment[0]);
     }
 
-    public int numberOfSegments() {
-        return this.segments.length;
-    }
+    public int numberOfSegments() { return this.segments.length; }
 
-    public LineSegment[] segments() {
-        return this.segments;
-    }
+    public LineSegment[] segments() { return this.segments; }
 
     private static void print4(Point p, Point q, Point r, Point s) {
         Point[] ps = {p, q, r, s};
