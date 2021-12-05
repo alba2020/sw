@@ -2,43 +2,28 @@ import edu.princeton.cs.algs4.Stack;
 
 public class Board {
 
-    private int N;
-    private char[][] blocks;
+    private final int N;
+    private int[][] blocks;
 
-    private int manhattan = -1;
-
+    // construct a board from an N-by-N array of blocks
+    // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
-        // construct a board from an N-by-N array of blocks
-        // (where blocks[i][j] = block in row i, column j)
         this.N = blocks.length;
 
-        this.blocks = new char[N][N];
+        this.blocks = new int[N][N];
         for (int i = 0; i < N; i++)
             for (int j = 0; j < N; j++)
-                this.blocks[i][j] = (char) blocks[i][j];
+                this.blocks[i][j] = blocks[i][j];
 
     }
 
-    private Board() { }
-
-    private static Board createBoard(char[][] blocks){
-        Board b = new Board();
-        int N = blocks.length;
-        b.N = N;
-        b.blocks = new char[N][N];
-        for (int i = 0; i < N; i++)
-            for (int j = 0; j < N; j++)
-                b.blocks[i][j] = blocks[i][j];
-        return b;
-    }
-
+    // board dimension N
     public int dimension() {
-        // board dimension N
         return N;
     }
 
+    // number of blocks out of place
     public int hamming() {
-        // number of blocks out of place
         int h = 0;
         for (int i = 0; i < N; i++)
             for (int j = 0; j < N; j++) {
@@ -52,8 +37,8 @@ public class Board {
         return h;
     }
 
-    private int computeManhattan() {
-        // sum of Manhattan distances between blocks and goal
+    // sum of Manhattan distances between blocks and goal
+    public int manhattan() {
         int m = 0;
         for (int i = 0; i < N; i++)
             for (int j = 0; j < N; j++) {
@@ -80,21 +65,15 @@ public class Board {
         return m;
     }
 
-    public int manhattan() {
-        if (this.manhattan == -1)
-            this.manhattan = computeManhattan();
-        return this.manhattan;
-    }
-
+    // is this board the goal board?
     public boolean isGoal() {
-        // is this board the goal board?
         return hamming() == 0;
     }
 
     public Board twin() {
         // a board obtained by exchanging two adjacent blocks in the same row
 
-        Board twin = createBoard(this.blocks);
+        Board twin = new Board(this.blocks);
 
         if (twin.blocks[0][0] != 0 && twin.blocks[0][1] != 0) { //swap on the 0th row
             twin.blocks[0][0] = this.blocks[0][1];
@@ -135,7 +114,7 @@ public class Board {
             }
         // up
         if (i0 > 0) {
-            Board bu = createBoard(this.blocks);
+            Board bu = new Board(this.blocks);
             bu.blocks[i0 - 1][j0] = 0;
             bu.blocks[i0][j0] = this.blocks[i0 - 1][j0];
             n.push(bu);
@@ -143,7 +122,7 @@ public class Board {
 
         // down
         if (i0 < N - 1) {
-            Board bd = createBoard(this.blocks);
+            Board bd = new Board(this.blocks);
             bd.blocks[i0 + 1][j0] = 0;
             bd.blocks[i0][j0] = this.blocks[i0 + 1][j0];
             n.push(bd);
@@ -151,7 +130,7 @@ public class Board {
 
         // left
         if (j0 > 0) {
-            Board bl = createBoard(this.blocks);
+            Board bl = new Board(this.blocks);
             bl.blocks[i0][j0 - 1] = 0;
             bl.blocks[i0][j0] = this.blocks[i0][j0 - 1];
             n.push(bl);
@@ -159,7 +138,7 @@ public class Board {
 
         // right
         if (j0 < N - 1) {
-            Board br = createBoard(this.blocks);
+            Board br = new Board(this.blocks);
             br.blocks[i0][j0 + 1] = 0;
             br.blocks[i0][j0] = this.blocks[i0][j0 + 1];
             n.push(br);
@@ -174,7 +153,7 @@ public class Board {
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", (int)this.blocks[i][j]));
+                s.append(String.format("%2d ", this.blocks[i][j]));
             }
             s.append("\n");
         }

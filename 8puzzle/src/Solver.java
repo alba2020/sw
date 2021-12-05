@@ -12,21 +12,23 @@ public class Solver {
         private Board board;
         private int steps = 0;
         private Node parent;
+        private int manhattan; // cache
 
-        public Node(Board b, int s, Node p) {
-            this.board = b;
-            this.steps = s;
-            this.parent = p;
+        public Node(Board board, int steps, Node parent) {
+            this.board = board;
+            this.steps = steps;
+            this.parent = parent;
+            this.manhattan = board.manhattan();
         }
 
-        public int compareTo(Node that){
+        public int compareTo(Node that) {
             if (this.priority() < that.priority()) return -1;
             else if (this.priority() > that.priority()) return 1;
             else return 0;
         }
 
         public int priority() {
-            return this.board.manhattan() + this.steps;
+            return this.manhattan + this.steps;
         }
 
         public Iterable<Node> children() {
@@ -50,7 +52,6 @@ public class Solver {
         MinPQ<Node> antifringe = new MinPQ<Node>();
         antifringe.insert(new Node(initial.twin(), 0, null));
 
-
         while(true) {
             Node node = fringe.delMin();
             Node antinode = antifringe.delMin();
@@ -63,12 +64,8 @@ public class Solver {
                 solvable = false;
                 break;
             } else {
-                Stack<Node> children = (Stack<Node>) node.children();
-                for (Node ch : children)
-                    fringe.insert(ch);
-                Stack<Node> antichildren = (Stack<Node>) antinode.children();
-                for (Node ach : antichildren)
-                    antifringe.insert(ach);
+                for (Node ch : node.children()) fringe.insert(ch);
+                for (Node ach : antinode.children()) antifringe.insert(ach);
             }
         }
     } // constructor
