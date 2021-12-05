@@ -89,7 +89,7 @@ public class FastCollinearPointsOld {
             Point[] copy = new Point[sz];
             for (int j = 0; j < sz; j++) copy[j] = points[i + j]; //make a copy
 
-            Arrays.sort(copy, 1, sz, copy[0].SLOPE_ORDER);
+            Arrays.sort(copy, 1, sz, copy[0].slopeOrder());
 
             for (int k = 1; k < sz-2;) {
                 int v = 1;

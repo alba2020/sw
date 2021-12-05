@@ -5,8 +5,6 @@ import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
 
-    public final Comparator<Point> SLOPE_ORDER = new SlopeOrder();
-
     private final int x;
     private final int y;
 
@@ -70,7 +68,7 @@ public class Point implements Comparable<Point> {
     }
 
     public Comparator<Point> slopeOrder() {
-        return SLOPE_ORDER;
+        return new SlopeOrder();
     }
 
     private class SlopeOrder implements Comparator<Point> {
